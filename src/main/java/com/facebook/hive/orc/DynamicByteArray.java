@@ -19,14 +19,14 @@
  */
 package com.facebook.hive.orc;
 
+import io.airlift.slice.Slice;
+import io.airlift.slice.Slices;
+import org.apache.hadoop.io.Text;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-
-import io.airlift.slice.Slice;
-import io.airlift.slice.Slices;
-import org.apache.hadoop.io.Text;
 
 /**
  * A class that is a growable array of bytes. Growth is managed in terms of

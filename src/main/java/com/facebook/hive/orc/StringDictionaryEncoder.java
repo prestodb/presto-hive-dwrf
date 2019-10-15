@@ -19,17 +19,15 @@
  */
 package com.facebook.hive.orc;
 
+import com.google.common.primitives.Ints;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
 import it.unimi.dsi.fastutil.ints.IntArrays;
 import it.unimi.dsi.fastutil.ints.IntComparator;
+import org.apache.hadoop.io.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import org.apache.hadoop.io.Text;
-
-import com.google.common.primitives.Ints;
 
 /**
  * A fast, memory efficient implementation of dictionary encoding stores strings. The strings are stored as UTF-8 bytes
