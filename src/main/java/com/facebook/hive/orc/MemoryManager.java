@@ -20,16 +20,16 @@
 
 package com.facebook.hive.orc;
 
+import com.facebook.airlift.log.Logger;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.airlift.log.Logger;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 
 /**
  * Implements a memory manager that keeps a global context of how many ORC

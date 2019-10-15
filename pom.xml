@@ -18,9 +18,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.airlift</groupId>
+        <groupId>com.facebook.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>61</version>
+        <version>95</version>
     </parent>
 
     <groupId>com.facebook.hive</groupId>
@@ -40,7 +40,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    
     <scm>
         <connection>scm:git:git://github.com/facebook/hive-dwrf.git</connection>
         <url>https://github.com/facebook/hive-dwrf</url>
@@ -53,6 +53,8 @@
         <air.check.skip-jacoco>true</air.check.skip-jacoco>
         <air.check.skip-modernizer>true</air.check.skip-modernizer>
         <air.check.skip-license>true</air.check.skip-license>
+        <air.check.skip-checkstyle>true</air.check.skip-checkstyle>
+        <air.check.skip-spotbugs>true</air.check.skip-spotbugs>
         <air.javadoc.lint>-missing</air.javadoc.lint>
     </properties>
 
@@ -78,9 +80,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.airlift</groupId>
+            <groupId>com.facebook.airlift</groupId>
             <artifactId>log</artifactId>
-            <version>0.142</version>
+            <version>0.186</version>
         </dependency>
 
         <dependency>
