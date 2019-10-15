@@ -53,7 +53,7 @@ public class OrcLazyRowObjectInspector extends OrcLazyStructObjectInspector {
 
   @Override
   public Object getStructFieldData(Object data, StructField fieldRef) {
-    int offset = fieldRef.getFieldID();
+    int offset = ((Field) fieldRef).getOffset();
 
     try {
       OrcLazyObject obj = ((OrcLazyRow) data).getFieldValue(offset);
