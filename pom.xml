@@ -88,7 +88,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>6.5.0</version>
+            <version>8.5.2</version>
         </dependency>
 
         <dependency>

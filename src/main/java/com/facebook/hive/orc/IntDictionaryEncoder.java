@@ -61,7 +61,7 @@ class IntDictionaryEncoder extends DictionaryEncoder {
     }
 
     public int getByteSize() {
-      int size = key.length * 8 + value.length * 4 + used.length;
+      int size = key.length * 8 + value.length * 4;
 
       // If we're close to the point where the dictionary is going to be rehashed, be pessimistic
       // and adjust the size assuming we will
