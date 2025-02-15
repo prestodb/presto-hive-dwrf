@@ -47,6 +47,22 @@
         <tag>HEAD</tag>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <properties>
         <air.check.skip-findbugs>true</air.check.skip-findbugs>
         <air.check.skip-pmd>true</air.check.skip-pmd>
@@ -67,9 +83,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.facebook.presto.hive</groupId>
-            <artifactId>hive-apache</artifactId>
-            <version>4.0.1-1-SNAPSHOT</version>
+            <groupId>com.github.imjalpreet</groupId>
+            <artifactId>presto-hive-apache</artifactId>
+            <version>hive4-upgrade-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
