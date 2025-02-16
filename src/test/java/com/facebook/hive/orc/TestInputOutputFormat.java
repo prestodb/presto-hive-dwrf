@@ -33,7 +33,6 @@ import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.ql.exec.FileSinkOperator;
 import org.apache.hadoop.hive.ql.io.HiveOutputFormat;
 import org.apache.hadoop.hive.ql.io.InputFormatChecker;
-import org.apache.hadoop.hive.serde2.SerDe;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspectorFactory;
 import org.apache.hadoop.hive.serde2.objectinspector.StructField;
 import org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector;
@@ -100,7 +99,7 @@ public class TestInputOutputFormat {
           ObjectInspectorFactory.getReflectionObjectInspector(MyRow.class,
               ObjectInspectorFactory.ObjectInspectorOptions.JAVA);
     }
-    SerDe serde = new OrcSerde();
+    OrcSerde serde = new OrcSerde();
     HiveOutputFormat<?, ?> outFormat = new OrcOutputFormat();
     FileSinkOperator.RecordWriter writer =
         outFormat.getHiveRecordWriter(conf, testFilePath, MyRow.class, true,
@@ -112,7 +111,7 @@ public class TestInputOutputFormat {
     serde = new OrcSerde();
     properties.setProperty("columns", "x,y");
     properties.setProperty("columns.types", "int:int");
-    serde.initialize(conf, properties);
+    serde.initialize(conf, properties, null);
     assertEquals(OrcSerde.OrcSerdeRow.class, serde.getSerializedClass());
     inspector = (StructObjectInspector) serde.getObjectInspector();
     assertEquals("struct<x:int,y:int>", inspector.getTypeName());
@@ -215,7 +214,7 @@ public class TestInputOutputFormat {
           ObjectInspectorFactory.getReflectionObjectInspector(NestedRow.class,
               ObjectInspectorFactory.ObjectInspectorOptions.JAVA);
     }
-    SerDe serde = new OrcSerde();
+    OrcSerde serde = new OrcSerde();
     OutputFormat<?, ?> outFormat = new OrcOutputFormat();
     RecordWriter writer =
         outFormat.getRecordWriter(fs, conf, testFilePath.toString(),
@@ -230,7 +229,7 @@ public class TestInputOutputFormat {
     serde = new OrcSerde();
     properties.setProperty("columns", "z,r");
     properties.setProperty("columns.types", "int:struct<x:int,y:int>");
-    serde.initialize(conf, properties);
+    serde.initialize(conf, properties, null);
     inspector = (StructObjectInspector) serde.getObjectInspector();
     InputFormat<?,?> in = new OrcInputFormat();
     FileInputFormat.setInputPaths(conf, testFilePath.toString());
@@ -273,8 +272,8 @@ public class TestInputOutputFormat {
     writer.close(true);
     properties.setProperty("columns", "x,y");
     properties.setProperty("columns.types", "int:int");
-    SerDe serde = new OrcSerde();
-    serde.initialize(conf, properties);
+    OrcSerde serde = new OrcSerde();
+    serde.initialize(conf, properties, null);
     InputFormat<?,?> in = new OrcInputFormat();
     FileInputFormat.setInputPaths(conf, testFilePath.toString());
     InputSplit[] splits = in.getSplits(conf, 1);
@@ -321,7 +320,7 @@ public class TestInputOutputFormat {
           ObjectInspectorFactory.getReflectionObjectInspector(StringRow.class,
               ObjectInspectorFactory.ObjectInspectorOptions.JAVA);
     }
-    SerDe serde = new OrcSerde();
+    OrcSerde serde = new OrcSerde();
     HiveOutputFormat<?, ?> outFormat = new OrcOutputFormat();
     FileSinkOperator.RecordWriter writer =
         outFormat.getHiveRecordWriter(conf, testFilePath, StringRow.class,
@@ -335,7 +334,7 @@ public class TestInputOutputFormat {
     writer.close(true);
     serde = new OrcSerde();
     properties.setProperty("columns", "str,str2");
-    serde.initialize(conf, properties);
+    serde.initialize(conf, properties, null);
     inspector = (StructObjectInspector) serde.getObjectInspector();
     assertEquals("struct<str:string,str2:string>", inspector.getTypeName());
     InputFormat<?,?> in = new OrcInputFormat();
