@@ -21,11 +21,11 @@
 package com.facebook.hive.orc.lazy;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hadoop.hive.serde2.io.TimestampWritable;
+import org.apache.hadoop.hive.common.type.Timestamp;
+import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 
 import com.facebook.hive.orc.InStream;
 import com.facebook.hive.orc.OrcProto;
@@ -72,12 +72,12 @@ public class LazyTimestampTreeReader extends LazyTreeReader {
 
   @Override
   public Object next(Object previous) throws IOException {
-    TimestampWritable result = null;
+    TimestampWritableV2 result = null;
     if (valuePresent) {
       if (previous == null) {
-        result = new TimestampWritable();
+        result = new TimestampWritableV2();
       } else {
-        result = (TimestampWritable) previous;
+        result = (TimestampWritableV2) previous;
       }
       long millis = (data.next() + WriterImpl.BASE_TIMESTAMP) *
           WriterImpl.MILLIS_PER_SECOND;
@@ -89,7 +89,7 @@ public class LazyTimestampTreeReader extends LazyTreeReader {
         millis -= newNanos / 1000000;
       }
       Timestamp timestamp = result.getTimestamp();
-      timestamp.setTime(millis);
+      timestamp.setTimeInMillis(millis);
       timestamp.setNanos(newNanos);
       result.set(timestamp);
     }

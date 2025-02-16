@@ -27,6 +27,7 @@ import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
 import com.facebook.hive.orc.lazy.OrcLazyRowObjectInspector;
+import org.apache.hadoop.hive.serde2.AbstractSerDe;
 import org.apache.hadoop.hive.serde2.SerDe;
 import org.apache.hadoop.hive.serde2.SerDeException;
 import org.apache.hadoop.hive.serde2.SerDeStats;
@@ -40,7 +41,7 @@ import org.apache.hadoop.io.Writable;
  * A serde class for ORC.
  * It transparently passes the object to/from the ORC file reader/writer.
  */
-public class OrcSerde implements SerDe {
+public class OrcSerde extends AbstractSerDe {
   private final OrcSerdeRow row = new OrcSerdeRow();
   private ObjectInspector inspector = null;
 
@@ -68,7 +69,7 @@ public class OrcSerde implements SerDe {
   }
 
   @Override
-  public void initialize(Configuration conf, Properties table) {
+  public void initialize(Configuration conf, Properties table, Properties partition) {
     // Read the configuration parameters
     String columnNameProperty = table.getProperty("columns");
     // NOTE: if "columns.types" is missing, all columns will be of String type

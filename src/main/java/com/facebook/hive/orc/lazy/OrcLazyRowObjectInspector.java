@@ -33,8 +33,8 @@ import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 public class OrcLazyRowObjectInspector extends OrcLazyStructObjectInspector {
 
   public OrcLazyRowObjectInspector(StructTypeInfo info) {
-    ArrayList<String> fieldNames = info.getAllStructFieldNames();
-    ArrayList<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
+    List<String> fieldNames = info.getAllStructFieldNames();
+    List<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
     for(int i=0; i < fieldNames.size(); ++i) {
       fields.add(new Field(fieldNames.get(i),
           OrcLazyObjectInspectorUtils.createLazyObjectInspector(fieldTypes.get(i)), i));
@@ -53,7 +53,7 @@ public class OrcLazyRowObjectInspector extends OrcLazyStructObjectInspector {
 
   @Override
   public Object getStructFieldData(Object data, StructField fieldRef) {
-    int offset = ((Field) fieldRef).getOffset();
+    int offset = fieldRef.getFieldID();
 
     try {
       OrcLazyObject obj = ((OrcLazyRow) data).getFieldValue(offset);

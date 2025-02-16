@@ -1736,8 +1736,8 @@ public class WriterImpl implements Writer, MemoryManager.Callback {
       super.write(obj, RawDatasizeConst.TIMESTAMP_SIZE);
       if (obj != null) {
         Timestamp val =
-            ((TimestampObjectInspector) inspector).
-                getPrimitiveJavaObject(obj);
+                ((TimestampObjectInspector) inspector).
+                    getPrimitiveJavaObject(obj).toSqlTimestamp();
         seconds.write((val.getTime() / MILLIS_PER_SECOND) - BASE_TIMESTAMP);
         nanos.write(formatNanos(val.getNanos()));
       }
