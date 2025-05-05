@@ -29,6 +29,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hive.common.type.Timestamp;
 import org.apache.hadoop.hive.serde2.objectinspector.ListObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.MapObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
@@ -52,7 +53,6 @@ import org.apache.hadoop.io.Text;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1707,7 +1707,7 @@ public class WriterImpl implements Writer, MemoryManager.Callback {
 
   public static final int MILLIS_PER_SECOND = 1000;
   public static final long BASE_TIMESTAMP =
-      Timestamp.valueOf("2015-01-01 00:00:00").getTime() / MILLIS_PER_SECOND;
+          Timestamp.valueOf("2015-01-01 00:00:00").toEpochMilli() / MILLIS_PER_SECOND;
 
   private static class TimestampTreeWriter extends TreeWriter {
     private final RunLengthIntegerWriter seconds;
@@ -1737,8 +1737,8 @@ public class WriterImpl implements Writer, MemoryManager.Callback {
       if (obj != null) {
         Timestamp val =
                 ((TimestampObjectInspector) inspector).
-                    getPrimitiveJavaObject(obj).toSqlTimestamp();
-        seconds.write((val.getTime() / MILLIS_PER_SECOND) - BASE_TIMESTAMP);
+                    getPrimitiveJavaObject(obj);
+        seconds.write(val.toEpochMilli() / MILLIS_PER_SECOND - BASE_TIMESTAMP);
         nanos.write(formatNanos(val.getNanos()));
       }
     }
