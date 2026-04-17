@@ -808,15 +808,15 @@ public class WriterImpl implements Writer, MemoryManager.Callback {
           case PRIMITIVE:
             switch (((PrimitiveObjectInspector) inspector).getPrimitiveCategory()) {
               case SHORT:
-                buffer[bufferIndex++] = new Long(((ShortObjectInspector) inspector).get(obj));
+                buffer[bufferIndex++] = Long.valueOf(((ShortObjectInspector) inspector).get(obj));
                 setRawDataSize(RawDatasizeConst.SHORT_SIZE);
                 break;
               case INT:
-                buffer[bufferIndex++] = new Long(((IntObjectInspector) inspector).get(obj));
+                buffer[bufferIndex++] = Long.valueOf(((IntObjectInspector) inspector).get(obj));
                 setRawDataSize(RawDatasizeConst.INT_SIZE);
                 break;
               case LONG:
-                buffer[bufferIndex++] = new Long(((LongObjectInspector) inspector).get(obj));
+                buffer[bufferIndex++] = Long.valueOf(((LongObjectInspector) inspector).get(obj));
                 setRawDataSize(RawDatasizeConst.LONG_SIZE);
                 break;
               default:
@@ -2190,7 +2190,7 @@ public class WriterImpl implements Writer, MemoryManager.Callback {
           }
         }
 
-        indexMap.put(name, new Integer(streamList.size()));
+        indexMap.put(name, Integer.valueOf(streamList.size()));
         streamList.add(pair);
       } else {
         pair.getValue().clear();
