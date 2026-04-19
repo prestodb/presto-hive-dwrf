@@ -33,7 +33,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,10 +42,11 @@ import java.util.Random;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hive.common.type.Timestamp;
 import org.apache.hadoop.hive.serde2.io.ByteWritable;
 import org.apache.hadoop.hive.serde2.io.DoubleWritable;
 import org.apache.hadoop.hive.serde2.io.ShortWritable;
-import org.apache.hadoop.hive.serde2.io.TimestampWritable;
+import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 import org.apache.hadoop.hive.serde2.objectinspector.ListObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.MapObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
@@ -811,14 +811,14 @@ public class TestOrcFile {
     assertEquals("struct<time:timestamp,union:uniontype<int,string>>",
         inspector.getTypeName());
     assertEquals(Timestamp.valueOf("2000-03-12 15:00:00"),
-        ((TimestampWritable) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
+        ((TimestampWritableV2) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
     union = (OrcUnion) ((OrcLazyUnion) row.getFieldValue(1)).materialize();
     assertEquals(0, union.getTag());
     assertEquals(new IntWritable(42), union.getObject());
     lazyRow = (OrcLazyStruct) rows.next(lazyRow);
     row = (OrcStruct) lazyRow.materialize();
     assertEquals(Timestamp.valueOf("2000-03-20 12:00:00.123456789"),
-        ((TimestampWritable) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
+        ((TimestampWritableV2) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
     ((OrcLazyUnion) row.getFieldValue(1)).materialize();
     assertEquals(1, union.getTag());
     assertEquals(new Text("hello"), union.getObject());
@@ -841,14 +841,14 @@ public class TestOrcFile {
     lazyRow = (OrcLazyStruct) rows.next(lazyRow);
     row = (OrcStruct) lazyRow.materialize();
     assertEquals(Timestamp.valueOf("1900-01-01 00:00:00"),
-        ((TimestampWritable) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
+        ((TimestampWritableV2) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
     ((OrcLazyUnion) row.getFieldValue(1)).materialize();
     assertEquals(new IntWritable(200000), union.getObject());
     for(int i=1900; i < 2200; ++i) {
       lazyRow = (OrcLazyStruct) rows.next(lazyRow);
       row = (OrcStruct) lazyRow.materialize();
       assertEquals(Timestamp.valueOf(i + "-05-05 12:34:56." + i),
-          ((TimestampWritable) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
+          ((TimestampWritableV2) ((OrcLazyTimestamp) row.getFieldValue(0)).materialize()).getTimestamp());
       ((OrcLazyUnion) row.getFieldValue(1)).materialize();
       if ((i & 1) == 0) {
         assertEquals(0, union.getTag());

@@ -20,16 +20,15 @@
 
 package com.facebook.hive.orc.lazy;
 
-import java.sql.Timestamp;
-
-import org.apache.hadoop.hive.serde2.io.TimestampWritable;
+import org.apache.hadoop.hive.common.type.Timestamp;
+import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorUtils;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.TimestampObjectInspector;
 import org.apache.hadoop.hive.serde2.typeinfo.PrimitiveTypeInfo;
 import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoFactory;
 
 public class OrcLazyTimestampObjectInspector extends
-    OrcLazyPrimitiveObjectInspector<OrcLazyTimestamp, TimestampWritable> implements TimestampObjectInspector {
+    OrcLazyPrimitiveObjectInspector<OrcLazyTimestamp, TimestampWritableV2> implements TimestampObjectInspector {
 
   protected OrcLazyTimestampObjectInspector() {
     super(PrimitiveObjectInspectorUtils.timestampTypeEntry);
@@ -37,7 +36,7 @@ public class OrcLazyTimestampObjectInspector extends
 
   @Override
   public Timestamp getPrimitiveJavaObject(Object o) {
-    TimestampWritable writable = getPrimitiveWritableObject(o);
+    TimestampWritableV2 writable = getPrimitiveWritableObject(o);
     return writable == null ? null : writable.getTimestamp();
   }
 
