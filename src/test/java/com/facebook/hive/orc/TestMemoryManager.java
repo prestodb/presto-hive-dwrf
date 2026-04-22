@@ -19,8 +19,8 @@ package com.facebook.hive.orc;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.doubleThat;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.doubleThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,9 +33,8 @@ import junit.framework.Assert;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
 /**
  * Test the ORC memory manager.
@@ -94,29 +93,18 @@ public class TestMemoryManager {
     assertTrue("Pool too big: " + pool, pool < mem * 0.901);
   }
 
-  private static class DoubleMatcher extends BaseMatcher<Double> {
-    final double expected;
-    final double error;
-    DoubleMatcher(double expected, double error) {
-      this.expected = expected;
-      this.error = error;
-    }
-
-    @Override
-    public boolean matches(Object val) {
-      double dbl = (Double) val;
-      return Math.abs(dbl - expected) <= error;
-    }
-
-    @Override
-    public void describeTo(Description description) {
-      description.appendText("not sufficiently close to ");
-      description.appendText(Double.toString(expected));
-    }
-  }
-
-  private static DoubleMatcher closeTo(double value, double error) {
-    return new DoubleMatcher(value, error);
+  private static ArgumentMatcher<Double> closeTo(double expected, double error) {
+    return new ArgumentMatcher<Double>() {
+      @Override
+      public boolean matches(Double val) {
+        return val != null && Math.abs(val - expected) <= error;
+      }
+      
+      @Override
+      public String toString() {
+        return "close to " + expected + " (±" + error + ")";
+      }
+    };
   }
 
   @Test
@@ -135,7 +123,7 @@ public class TestMemoryManager {
     }
     for(int call=0; call < calls.length; ++call) {
       verify(calls[call], times(2))
-          .checkMemory(doubleThat(closeTo(0.2, ERROR)));
+          .checkMemory(doubleThat(arg -> Math.abs(arg - 0.2) <= ERROR));
     }
   }
 

@@ -763,7 +763,7 @@ public class TestOrcFile {
       if ((i & 1) == 0) {
         union.set((byte) 0, new IntWritable(i*i));
       } else {
-        union.set((byte) 1, new Text(new Integer(i*i).toString()));
+        union.set((byte) 1, new Text(Integer.valueOf(i*i).toString()));
       }
       writer.addRow(row);
     }
@@ -855,7 +855,7 @@ public class TestOrcFile {
         assertEquals(new IntWritable(i*i), union.getObject());
       } else {
         assertEquals(1, union.getTag());
-        assertEquals(new Text(new Integer(i*i).toString()), union.getObject());
+        assertEquals(new Text(Integer.valueOf(i*i).toString()), union.getObject());
       }
     }
     for(int i=0; i < 5000; ++i) {
