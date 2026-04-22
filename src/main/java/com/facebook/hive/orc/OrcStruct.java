@@ -76,7 +76,7 @@ public final class OrcStruct implements Writable {
   /**
    * Change the names and number of fields in the struct. No effect if the number of
    * fields is the same. The old field values are copied to the new array.
-   * @param numFields the new number of fields
+   * @param fieldNames the field names
    */
   public void setFieldNames(List<String> fieldNames) {
     this.fieldNames = fieldNames;
@@ -178,7 +178,8 @@ public final class OrcStruct implements Writable {
       return null;
     }
 
-    public int getOffset() {
+    @Override
+    public int getFieldID() {
       return offset;
     }
   }
@@ -187,8 +188,8 @@ public final class OrcStruct implements Writable {
     private final List<StructField> fields;
 
     public OrcStructInspector(StructTypeInfo info) {
-      ArrayList<String> fieldNames = info.getAllStructFieldNames();
-      ArrayList<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
+      List<String> fieldNames = info.getAllStructFieldNames();
+      List<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
       fields = new ArrayList<StructField>(fieldNames.size());
       for(int i=0; i < fieldNames.size(); ++i) {
         fields.add(new Field(fieldNames.get(i),
