@@ -63,6 +63,8 @@
         <air.check.skip-checkstyle>true</air.check.skip-checkstyle>
         <air.check.skip-spotbugs>true</air.check.skip-spotbugs>
         <air.javadoc.lint>-missing</air.javadoc.lint>
+
+        <dep.central-publishing.version>0.8.0</dep.central-publishing.version>
     </properties>
 
     <dependencies>
@@ -253,18 +255,19 @@
                             </gpgArguments>
                         </configuration>
                     </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>deploy-to-ossrh</id>
-            <build>
-                <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${dep.central-publishing.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>ossrh</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>validated</waitUntil>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-    </profiles></project>
+    </profiles>
+</project>
